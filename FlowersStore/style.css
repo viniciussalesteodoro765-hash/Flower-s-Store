@@ -43,9 +43,9 @@ h2 {
 }
 
 /*Titulos das categorias*/
-h3 {
+#cate {
     font-family: var(--font-title);
-    font-size: 1.2rem;
+    font-size: 2.10rem;
     margin: 1px 0 1px;
     color: var(--primary-color);
 }
