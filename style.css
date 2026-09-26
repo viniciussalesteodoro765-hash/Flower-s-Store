@@ -1,0 +1,441 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --primary-color: #680d1a;
+  --secondary-color: #b11d10;
+  --third-color: #eca854;
+  --fourth-color: #c28b82;
+  --fifth-color: #f5ebe6;
+  --sixth-color: #e2c1bf;
+
+  --font-title: "Cinzel", serif;
+  --font-body: "Montserrat", sans-serif;
+}
+
+body {
+  background: var(--sixth-color);
+  font-family: var(--font-body);
+  color: var(--primary-color);
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 10px;
+}
+
+/* Títulos das Seções */
+h2 {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  margin: 20px 0 10px 10px;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--fourth-color);
+  padding-bottom: 5px;
+}
+
+/* ======== CABEÇALHO (LOGO E NOME DA LOJA) =========== */
+header {
+  background: var(--fourth-color);
+  padding: 20px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.titulo-loja {
+  font-family: var(--font-title);
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Logos Circulares Lado a Lado */
+.logo-circular {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ======== MENU DE NAVEGAÇÃO FORA DO CABEÇALHO =========== */
+.navegacao-principal {
+  background: var(--primary-color);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navegacao-principal a {
+  color: var(--fifth-color);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.navegacao-principal a:hover,
+.navegacao-principal a:focus-visible {
+  background: var(--fourth-color);
+  color: var(--primary-color);
+  outline: none;
+}
+
+/* ============ GRADES DE PRODUTOS ============ */
+.grade-produtos-geral,
+.grade-produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+/* ============ CARDS DE PRODUTOS ============ */
+.produto {
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--fourth-color);
+  border-radius: 8px;
+  background: var(--fifth-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  position: relative;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.produto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  border-color: #800020; /* Destaca a borda ao passar o mouse */
+}
+
+.produto-promocao {
+  border: 2px solid var(--secondary-color);
+}
+
+.produto h3 {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  margin: 15px 0 10px;
+}
+
+.preco {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.fotos {
+  width: 100%;
+  height: 300px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* Tag de Promoção */
+.tag-desconto {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--secondary-color);
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+/* Botão Comprar */
+button {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background: var(--primary-color);
+  color: var(--fifth-color);
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s ease;
+}
+
+button:hover,
+button:focus-visible {
+  background: var(--secondary-color);
+  outline: 2px solid var(--third-color);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* ============ RODAPÉ ============ */
+.rodape {
+  background: var(--fourth-color);
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 25px 0;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* ============ MEDIA QUERIES (RESPONSIVIDADE) ============ */
+@media (max-width: 768px) {
+  .logo-container {
+    gap: 12px;
+  }
+
+  .titulo-loja {
+    font-size: 1.6rem;
+  }
+
+  .logo-circular {
+    width: 55px;
+    height: 55px;
+  }
+
+  .navegacao-principal {
+    gap: 8px;
+    padding: 10px 10px;
+  }
+
+  .navegacao-principal a {
+    font-size: 0.85rem;
+    padding: 4px 8px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .fotos {
+    height: 250px;
+  }
+}
+
+/* ÁREA DE CONTATO */
+
+.Título-da-página {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 84px 0;
+
+  h2 {
+    font-size: 5rem;
+    font-weight: 600;
+    line-height: 4rem;
+  }
+
+  h1 {
+    margin-top: 18px;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1rem;
+  }
+
+  p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 30px;
+    max-width: 65%;
+    text-align: center;
+  }
+}
+
+#main_container {
+  background-color: #f7f7f7;
+  border-radius: 32px 32px 32px 32px;
+  padding: 32px 8%;
+  
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+
+  #contatcs_container {
+    width: 50%;
+
+    h3 {
+      font-size: 2rem;
+      font-weight: 500;
+    }
+
+    p {
+      font-size: 1rem;
+      font-weight: 400;
+      width: 80%;
+    }
+
+    h4 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #aa0f0f;
+      margin-top: 16px;
+    }
+
+    #cards_container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      margin: 24px 0px;
+
+      .contact-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+        padding: 18px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: box-shadow 0.3s ease;
+
+        &:hover {
+          box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 40px;
+          min-height: 40px;
+          max-width: 40px;
+          max-height: 40px;
+          border-radius: 100%;
+          font-size: 1.5rem;
+        }
+        .card-infos {
+          p {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1rem;
+            color: #0e0d0d;
+          }
+          span {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #475569;
+          }
+        }
+
+        &.telefone{
+            .card-icon {
+                background-color: #faf5ed;
+                color: #a9ac04;
+            }
+        }
+
+        &.localizacao {
+          .card-icon {
+            background-color: #dbeafe;
+            color: #0245df;
+          }
+        }
+
+        &.email {
+          .card-icon {
+            background-color: #ede9fe;
+            color: #e90778;
+          }
+        }
+
+        &.whatsapp {
+          .card-icon {
+            background-color: #d1fae5;
+            color: #047857;
+          }
+        }
+        
+
+
+      }
+      
+    }
+    #redes-sociais-icones{
+          display: flex;
+          gap: 12px;
+          margin-top: 12px;
+
+          .card-redes{
+            height: 40px;
+            width: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+            font-size: 1.3rem;
+            border-radius: 100%;
+
+            &.instagram{
+              background-color: #fb278e;
+              color: #fefdfd;
+            }
+
+            &.zapzap{
+              background-color: #07ce6b;
+            }
+            color: #f6f6f7;
+          }
+         
+        }
+  }
+
+  #formulario-contato {
+    width: 50%;
+    .mapBox{
+      position: relative;
+      width: 300px;
+      height: 300px;
+      background: #ffffff;
+      margin: 100px;
+    }
+
+    .mapBox iframe{
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
