@@ -240,7 +240,11 @@ button:active {
         font-size: 1.4rem;
     }
 
-    
+    .fotos {
+        height: 250px;
+    }
+}
+
 /* ============ SEÇÃO PRODUTOS ============ */
 h3 {
     font-family: var(--font-title);
@@ -477,8 +481,4 @@ ul{
     }
   }
 }
-    
-    .fotos {
-        height: 250px;
-    }
-}
+
