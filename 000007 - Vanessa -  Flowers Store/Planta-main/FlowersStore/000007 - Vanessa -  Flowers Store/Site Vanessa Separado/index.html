@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flower's Store - Bem-vindo</title>
+
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Ícones Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+
+    <style>
+      /* Reset Básico */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* 1. ANIMAÇÃO DE ENTRADA (Subindo ao carregar) */
+      @keyframes subirPaginaEntrada {
+        from {
+          opacity: 0;
+          transform: translateY(60px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 2. ANIMAÇÃO DE SAÍDA (Subindo e sumindo para ir à index) */
+      @keyframes subirPaginaSaida {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-100vh);
+        }
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        font-family: 'Montserrat', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #2b0b11;
+        background-image: url('https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=1920&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        /* Aplica animação de entrada por padrão */
+        animation: subirPaginaEntrada 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* Classe ativada via JS ao clicar para mudar de página */
+      body.saindo {
+        animation: subirPaginaSaida 0.6s cubic-bezier(0.7, 0, 0.84, 0) forwards !important;
+      }
+
+      /* Camada translúcida com tom Vinho/Marsala */
+      .entrada-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(112, 28, 42, 0.75), rgba(20, 5, 10, 0.85));
+        backdrop-filter: blur(3px);
+        z-index: 1;
+      }
+
+      /* Card Central Glassmorphism */
+      .entrada-card {
+        position: relative;
+        z-index: 2;
+        background: rgba(246, 230, 226, 0.18);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        padding: 40px 30px;
+        width: 90%;
+        max-width: 440px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Logo Circular */
+      .entrada-logo {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        margin-bottom: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Título */
+      .entrada-titulo {
+        font-family: 'Cinzel', serif;
+        font-size: 2.2rem;
+        color: #ffffff;
+        margin: 0 0 10px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Subtítulo */
+      .entrada-subtitulo {
+        font-size: 0.95rem;
+        color: #f6e6e2;
+        margin: 0 0 30px 0;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+      }
+
+      /* Contentor dos Botões */
+      .entrada-botoes {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      /* Botões Base */
+      .btn-entrada {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 140px;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+      }
+
+      /* Botão "Ver Site" */
+      .btn-site {
+        background-color: #701c2a;
+        color: #ffffff;
+        border: 1px solid #701c2a;
+      }
+
+      .btn-site:hover {
+        background-color: #8c2335;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(112, 28, 42, 0.4);
+      }
+
+      /* Botão "WhatsApp" */
+      .btn-whatsapp {
+        background-color: #25d366;
+        color: #ffffff;
+        border: 1px solid #25d366;
+      }
+
+      .btn-whatsapp:hover {
+        background-color: #20ba5a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="entrada-overlay"></div>
+
+    <main class="entrada-card">
+      <img
+        src="imagens/logo-flowers-store.jpg"
+        alt="Logo Flower's Store"
+        class="entrada-logo"
+      />
+
+      <h1 class="entrada-titulo">Flower's Store</h1>
+      <p class="entrada-subtitulo">Elegância & Estilo para o seu dia a dia</p>
+
+      <div class="entrada-botoes">
+        <!-- Botão com ID para disparar a transição de saída -->
+        <a href="promocao.html" id="btnVerSite" class="btn-entrada btn-site">
+          <i class="bi bi-bag-check-fill"></i>
+          Ver Site
+        </a>
+
+        <a
+          href="https://wa.me/5500000000000"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-entrada btn-whatsapp"
+        >
+          <i class="bi bi-whatsapp"></i>
+          WhatsApp
+        </a>
+      </div>
+    </main>
+
+    <!-- SCRIPT DE TRANSIÇÃO DA HOME PARA INDEX -->
+    <script>
+      const btnVerSite = document.getElementById('btnVerSite');
+
+      btnVerSite.addEventListener('click', function (e) {
+        e.preventDefault(); // Impede a troca instantânea de página
+        const destino = this.getAttribute('href');
+
+        // Adiciona a classe que faz a página subir totalmente
+        document.body.classList.add('saindo');
+
+        // Aguarda a animação terminar (600ms) e redireciona para index.html
+        setTimeout(() => {
+          window.location.href = destino;
+        }, 550);
+      });
+    </script>
+  </body>
+</html>

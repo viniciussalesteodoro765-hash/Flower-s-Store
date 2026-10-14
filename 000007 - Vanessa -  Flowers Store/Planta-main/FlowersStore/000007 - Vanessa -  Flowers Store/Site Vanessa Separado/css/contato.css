@@ -1,0 +1,254 @@
+/* ==========================================================================
+   PÁGINA: CONTATO (contato.css)
+   ========================================================================== */
+
+.Título-da-página {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px 20px 30px;
+    text-align: center;
+}
+
+.Título-da-página h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--fourth-color);
+    padding-bottom: 5px;
+}
+
+.Título-da-página p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 15px;
+    max-width: 700px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+#main_container {
+    background-color: var(--fifth-color, #f7f7f7);
+    border-radius: 24px;
+    padding: 32px 5%;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+#main_container #contatcs_container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#main_container #contatcs_container h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+#main_container #contatcs_container p {
+    font-size: 0.95rem;
+    font-weight: 400;
+    width: 100%;
+    margin-top: 8px;
+    color: #444;
+}
+
+#main_container #contatcs_container h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 20px;
+}
+
+#cards_container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.contact-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #ffffff;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    padding: 14px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+.contact-card .card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    min-height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    border-radius: 50%;
+    font-size: 1.4rem;
+}
+
+.contact-card .card-infos p {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #1a1a1a;
+}
+
+.contact-card .card-infos span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #475569;
+}
+
+.contact-card.telefone .card-icon {
+    background-color: #faf5ed;
+    color: #a9ac04;
+}
+
+.contact-card.localizacao .card-icon {
+    background-color: #dbeafe;
+    color: #0245df;
+}
+
+.contact-card.email .card-icon {
+    background-color: #ede9fe;
+    color: #e90778;
+}
+
+.contact-card.whatsapp .card-icon {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+#redes-sociais-icones {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+#redes-sociais-icones .card-redes {
+    height: 42px;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.3rem;
+    border-radius: 50%;
+    color: #ffffff;
+    transition: opacity 0.2s ease;
+}
+
+#redes-sociais-icones .card-redes:hover {
+    opacity: 0.85;
+}
+
+#redes-sociais-icones .card-redes.instagram {
+    background-color: #fb278e;
+}
+
+#redes-sociais-icones .card-redes.zapzap {
+    background-color: #07ce6b;
+}
+
+#formulario-contato {
+    width: 50%;
+    display: flex;
+}
+
+#formulario-contato .mapBox {
+    position: relative;
+    width: 100%;
+    min-height: 380px;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid var(--fourth-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#formulario-contato .mapBox iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* RESPONSIVIDADE EXCLUSIVA DA PÁGINA DE CONTATO */
+@media (max-width: 850px) {
+    .Título-da-página {
+        padding: 30px 15px 20px;
+    }
+
+    .Título-da-página h2 {
+        font-size: 2rem;
+    }
+
+    .Título-da-página p {
+        font-size: 0.95rem;
+        margin-top: 10px;
+    }
+
+    #main_container {
+        flex-direction: column;
+        padding: 24px 20px;
+        border-radius: 16px;
+        gap: 28px;
+    }
+
+    #main_container #contatcs_container,
+    #formulario-contato {
+        width: 100%;
+    }
+
+    #formulario-contato .mapBox {
+        min-height: 320px;
+        height: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    .Título-da-página h2 {
+        font-size: 1.6rem;
+    }
+
+    #main_container #contatcs_container h3 {
+        font-size: 1.5rem;
+    }
+
+    #main_container #contatcs_container h4 {
+        font-size: 1rem;
+    }
+
+    .contact-card {
+        padding: 12px;
+    }
+
+    .contact-card .card-icon {
+        min-width: 36px;
+        min-height: 36px;
+        max-width: 36px;
+        max-height: 36px;
+        font-size: 1.2rem;
+    }
+
+    #formulario-contato .mapBox {
+        min-height: 260px;
+        height: 260px;
+    }
+}
