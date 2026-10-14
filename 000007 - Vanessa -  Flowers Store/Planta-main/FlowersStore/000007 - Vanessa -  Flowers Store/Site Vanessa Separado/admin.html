@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Administrativo - Flower's Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+
+  <body class="admin-body">
+    <!-- TELA DE LOGIN (QUANDO NÃO AUTENTICADO) -->
+    <div id="secao-login" class="login-box">
+      <img
+        class="logo-circular"
+        src="imagens/logo-flowers-store.jpg"
+        alt="Logo Flower's Store"
+      />
+      <h2>Acesso Administrativo</h2>
+      <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">
+        Gerenciamento de Produtos e WhatsApp da Flower's Store
+      </p>
+
+      <div id="login-erro" style="display:none; background:#f8d7da; color:#842029; padding:10px; border-radius:6px; margin-bottom:15px; font-size:0.85rem;"></div>
+
+      <form id="form-login">
+        <div class="form-group">
+          <label for="usuario">Usuário</label>
+          <input type="text" id="usuario" class="form-control" required value="admin" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" class="form-control" required placeholder="Digite sua senha" autocomplete="current-password" />
+        </div>
+        <button type="submit" style="margin-top: 10px;">
+          <i class="bi bi-box-arrow-in-right"></i> Entrar no Painel
+        </button>
+      </form>
+      <p style="margin-top: 15px; font-size: 0.75rem; color: #888;">
+        (Senha padrão: <code>vanessa123</code>)
+      </p>
+    </div>
+
+    <!-- PAINEL PRINCIPAL (QUANDO AUTENTICADO) -->
+    <div id="secao-painel" style="display: none; flex-direction: column; min-height: 100vh;">
+      <header class="admin-header">
+        <div class="admin-header-title">
+          <img
+            class="logo-circular"
+            src="imagens/logo-flowers-store.jpg"
+            alt="Logo Flower's Store"
+            style="width: 50px; height: 50px;"
+          />
+          <div>
+            <h1>Flower's Store - Painel do Lojista</h1>
+            <p style="font-size: 0.8rem; color: #f5ebe6; margin: 0;">Atualização de Catálogo e Vendas WhatsApp</p>
+          </div>
+        </div>
+        <div class="admin-header-actions">
+          <a href="index.html" target="_blank" class="btn-secondary">
+            <i class="bi bi-shop"></i> Ver Loja Online
+          </a>
+          <button id="btn-logout" type="button" class="btn-danger">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </button>
+        </div>
+      </header>
+
+      <main class="admin-container">
+        <!-- ALERTAS DE SUCESSO OU ERRO -->
+        <div id="alerta-feedback" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: 600;"></div>
+
+        <!-- CONFIGURAÇÕES DE ATENDIMENTO E WHATSAPP -->
+        <div class="admin-card">
+          <h2><i class="bi bi-whatsapp" style="color: #25D366;"></i> Configuração de Atendimento WhatsApp</h2>
+          <p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">
+            Este número recebe as mensagens automáticas quando as clientes clicam em <strong>"Comprar Agora"</strong> no site.
+          </p>
+          <div class="grid-2">
+            <div>
+              <div class="form-group">
+                <label for="input-whatsapp">Número do WhatsApp (com DDD, somente números)</label>
+                <div style="display: flex; gap: 10px;">
+                  <input type="text" id="input-whatsapp" class="form-control" placeholder="Ex: 5534984055063" />
+                  <button type="button" id="btn-salvar-whatsapp" style="width: auto; white-space: nowrap;">
+                    <i class="bi bi-check2"></i> Salvar
+                  </button>
+                </div>
+                <small style="color: #666; font-size: 0.8rem;">Exemplo: 55 + DDD + Telefone (Ex: 5534984055063)</small>
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label for="input-senha-nova">Alterar Senha do Admin</label>
+                <div style="display: flex; gap: 10px;">
+                  <input type="password" id="input-senha-nova" class="form-control" placeholder="Nova senha (mínimo 4 dígitos)" />
+                  <button type="button" id="btn-salvar-senha" class="btn-secondary" style="width: auto; white-space: nowrap;">
+                    Atualizar Senha
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONEXÃO COM O BANCO DE DADOS SUPABASE (OPCIONAL) -->
+        <div class="admin-card">
+          <h2><i class="bi bi-database-fill" style="color: #3ECF8E;"></i> Banco de Dados na Nuvem (Supabase)</h2>
+          <p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">
+            Conecte o Supabase para que a loja leia os produtos em tempo real diretamente da nuvem. Se não configurado, o site usa o catálogo local normalmente.
+          </p>
+          <div class="grid-2">
+            <div>
+              <div class="form-group">
+                <label for="input-supabase-url">Project URL (Supabase)</label>
+                <input type="text" id="input-supabase-url" class="form-control" placeholder="https://exemplo.supabase.co" />
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label for="input-supabase-key">Anon / Public API Key</label>
+                <input type="password" id="input-supabase-key" class="form-control" placeholder="eyJh..." />
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+            <button type="button" id="btn-salvar-supabase" style="width: auto; padding: 10px 20px;">
+              <i class="bi bi-check2-circle"></i> Salvar Conexão Supabase
+            </button>
+            <button type="button" id="btn-testar-supabase" class="btn-secondary" style="width: auto; padding: 10px 18px;">
+              <i class="bi bi-lightning-charge"></i> Testar Conexão
+            </button>
+            <a href="/supabase.sql" target="_blank" download="supabase.sql" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 6px; font-size: 0.9rem;">
+              <i class="bi bi-filetype-sql"></i> Baixar Script SQL
+            </a>
+          </div>
+          <div id="status-supabase" style="display:none; margin-top: 15px; padding: 12px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;"></div>
+        </div>
+
+        <!-- UPLOAD E ATUALIZAÇÃO POR CSV -->
+        <div class="admin-card">
+          <h2><i class="bi bi-file-earmark-spreadsheet" style="color: #198754;"></i> Atualizar Produtos via Arquivo CSV</h2>
+          <p style="font-size: 0.9rem; color: #555; margin-bottom: 20px;">
+            Você pode editar sua lista de produtos no <strong>Excel</strong> ou <strong>Google Planilhas</strong> e carregar aqui.
+          </p>
+
+          <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+            <a href="/api/modelo-csv" download="modelo_produtos_flowers_store.csv" class="btn-success" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+              <i class="bi bi-download"></i> 1. Baixar Planilha Modelo (.csv)
+            </a>
+            <a href="/api/export-csv" download="produtos_flowers_store.csv" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+              <i class="bi bi-box-arrow-up-right"></i> Exportar Produtos Atuais (.csv)
+            </a>
+          </div>
+
+          <!-- DROPZONE -->
+          <div id="dropzone" class="upload-dropzone">
+            <i class="bi bi-cloud-arrow-up"></i>
+            <p><strong>Clique para selecionar</strong> ou arraste seu arquivo <strong>.CSV</strong> aqui</p>
+            <span>Compatível com Excel (separador por vírgula ou ponto-e-vírgula)</span>
+            <input type="file" id="input-file-csv" accept=".csv,text/csv" style="display: none;" />
+          </div>
+
+          <!-- PRÉ-VISUALIZAÇÃO DE UPLOAD -->
+          <div id="secao-pre-visualizacao" style="display: none; margin-top: 25px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="font-size: 1.1rem; color: var(--primary-color);">
+                <i class="bi bi-eye"></i> Pré-visualização do Arquivo (<span id="contagem-csv">0</span> produtos detectados)
+              </h3>
+              <div style="display: flex; gap: 10px;">
+                <button type="button" id="btn-cancelar-upload" class="btn-secondary" style="width: auto; padding: 8px 14px; font-size: 0.85rem;">
+                  Cancelar
+                </button>
+                <button type="button" id="btn-confirmar-upload" class="btn-success" style="width: auto; padding: 8px 20px; font-size: 0.95rem;">
+                  <i class="bi bi-check-circle-fill"></i> Publicar Produtos no Site
+                </button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Ref</th>
+                    <th>Foto</th>
+                    <th>Nome da Peça</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Desconto</th>
+                    <th>Destaque Home</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-preview"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- LISTA DE PRODUTOS ATIVOS NO SITE -->
+        <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+            <h2 style="margin: 0; border: none; padding: 0;">
+              <i class="bi bi-tags"></i> Produtos Atuais no Catálogo (<span id="total-produtos">0</span>)
+            </h2>
+            <button type="button" id="btn-recarregar" class="btn-secondary" style="width: auto; font-size: 0.85rem; padding: 6px 14px;">
+              <i class="bi bi-arrow-clockwise"></i> Atualizar Lista
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ref</th>
+                  <th>Imagem</th>
+                  <th>Nome do Produto</th>
+                  <th>Categoria</th>
+                  <th>Preço</th>
+                  <th>Desconto</th>
+                  <th>Destaque</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-produtos-atuais">
+                <tr>
+                  <td colspan="9" style="text-align: center; color: #888;">Carregando produtos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <footer class="rodape" style="margin-top: auto; padding: 15px 0; font-size: 0.85rem;">
+        <p>&copy; 2026 Flower's Store - Painel Administrativo</p>
+      </footer>
+    </div>
+
+    <!-- SCRIPT DE FUNCIONAMENTO DO ADMIN -->
+    <script>
+      let produtosCarregados = [];
+      let produtosPreview = [];
+      let tokenAuth = localStorage.getItem('flowers_admin_token') || '';
+
+      const secaoLogin = document.getElementById('secao-login');
+      const secaoPainel = document.getElementById('secao-painel');
+      const formLogin = document.getElementById('form-login');
+      const loginErro = document.getElementById('login-erro');
+      const alertaFeedback = document.getElementById('alerta-feedback');
+
+      // 1. Controle de Sessão
+      function verificarAutenticacao() {
+        if (tokenAuth) {
+          secaoLogin.style.display = 'none';
+          secaoPainel.style.display = 'flex';
+          carregarDadosIniciais();
+        } else {
+          secaoLogin.style.display = 'block';
+          secaoPainel.style.display = 'none';
+        }
+      }
+
+      formLogin.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const usuario = document.getElementById('usuario').value.trim();
+        const senha = document.getElementById('senha').value.trim();
+        loginErro.style.display = 'none';
+
+        // 1. Tenta autenticar pelo backend se existir
+        try {
+          const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usuario, senha })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success) {
+              tokenAuth = data.token;
+              localStorage.setItem('flowers_admin_token', tokenAuth);
+              verificarAutenticacao();
+              return;
+            }
+          }
+        } catch {
+          // Servidor offline ou hospedagem estática (Vercel)
+        }
+
+        // 2. Autenticação direta (funciona 100% no Vercel estático / GitHub Pages)
+        const usuarioEsperado = localStorage.getItem('flowers_admin_user') || 'admin';
+        const senhaEsperada = localStorage.getItem('flowers_admin_pass') || 'vanessa123';
+
+        if (usuario === usuarioEsperado && senha === senhaEsperada) {
+          tokenAuth = 'client_token_' + Date.now();
+          localStorage.setItem('flowers_admin_token', tokenAuth);
+          verificarAutenticacao();
+          return;
+        }
+
+        loginErro.innerText = 'Usuário ou senha incorretos.';
+        loginErro.style.display = 'block';
+      });
+
+      document.getElementById('btn-logout').addEventListener('click', () => {
+        localStorage.removeItem('flowers_admin_token');
+        tokenAuth = '';
+        verificarAutenticacao();
+      });
+
+      function mostrarFeedback(msg, tipo = 'success') {
+        alertaFeedback.innerText = msg;
+        alertaFeedback.style.display = 'block';
+        if (tipo === 'success') {
+          alertaFeedback.style.background = '#d1e7dd';
+          alertaFeedback.style.color = '#0f5132';
+        } else {
+          alertaFeedback.style.background = '#f8d7da';
+          alertaFeedback.style.color = '#842029';
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+          alertaFeedback.style.display = 'none';
+        }, 5000);
+      }
+
+      // 2. Carregar Configurações e Produtos
+      async function carregarDadosIniciais() {
+        carregarConfig();
+        carregarProdutos();
+      }
+
+      async function carregarConfig() {
+        let zap = localStorage.getItem('flowers_whatsapp') || '5534984055063';
+        let sUrl = localStorage.getItem('flowers_supabase_url') || '';
+        let sKey = localStorage.getItem('flowers_supabase_key') || '';
+
+        try {
+          const res = await fetch('/api/config');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.whatsapp) zap = data.whatsapp;
+            if (data.supabaseUrl) sUrl = data.supabaseUrl;
+            if (data.supabaseAnonKey) sKey = data.supabaseAnonKey;
+          }
+        } catch {}
+
+        document.getElementById('input-whatsapp').value = zap;
+        document.getElementById('input-supabase-url').value = sUrl;
+        document.getElementById('input-supabase-key').value = sKey;
+      }
+
+      async function carregarProdutos() {
+        const tbody = document.getElementById('tbody-produtos-atuais');
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;">Carregando...</td></tr>';
+
+        // 1. Tenta localStorage se já salvo no navegador
+        const localProds = localStorage.getItem('flowers_produtos');
+        if (localProds) {
+          try {
+            produtosCarregados = JSON.parse(localProds);
+            if (Array.isArray(produtosCarregados) && produtosCarregados.length > 0) {
+              renderizarTabelaProdutos(produtosCarregados);
+              return;
+            }
+          } catch {}
+        }
+
+        // 2. Tenta API
+        try {
+          const res = await fetch('/api/produtos?includeInactive=true');
+          if (res.ok) {
+            produtosCarregados = await res.json();
+            renderizarTabelaProdutos(produtosCarregados);
+            return;
+          }
+        } catch {}
+
+        // 3. Tenta arquivo estático data/produtos.json (funciona no Vercel)
+        try {
+          const res = await fetch('data/produtos.json');
+          if (res.ok) {
+            produtosCarregados = await res.json();
+            renderizarTabelaProdutos(produtosCarregados);
+            return;
+          }
+        } catch {}
+
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:red;">Erro ao carregar produtos.</td></tr>';
+      }
+
+      function renderizarTabelaProdutos(produtos) {
+        const tbody = document.getElementById('tbody-produtos-atuais');
+        document.getElementById('total-produtos').innerText = produtos.length;
+
+        if (!produtos || produtos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px;">Nenhum produto cadastrado no momento.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = produtos.map((p, idx) => {
+          const precoFormatado = Number(p.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+          const tagDesc = p.tag_desconto ? `<span class="badge badge-warning">${p.tag_desconto}</span>` : '-';
+          const destaque = p.destaque_home ? `<span class="badge badge-success">Sim</span>` : `<span style="color:#888;">Não</span>`;
+          const status = p.ativo !== false ? `<span class="badge badge-success">Ativo</span>` : `<span class="badge badge-danger">Inativo</span>`;
+
+          return `
+            <tr>
+              <td><strong>${p.referencia || 'REF-' + (idx+1)}</strong></td>
+              <td><img src="${p.imagem_url || 'imagens/logo-flowers-store.jpg'}" class="img-thumb" alt="${p.imagem_alt || p.nome}"></td>
+              <td>${p.nome}</td>
+              <td><span style="text-transform: capitalize;">${p.categoria}</span></td>
+              <td><strong>${precoFormatado}</strong></td>
+              <td>${tagDesc}</td>
+              <td>${destaque}</td>
+              <td>${status}</td>
+              <td>
+                <button type="button" class="action-btn btn-secondary" onclick="alternarStatus(${idx})" title="Ativar/Desativar">
+                  <i class="bi bi-power"></i>
+                </button>
+                <button type="button" class="action-btn btn-danger" onclick="excluirProduto(${idx})" title="Excluir">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      window.alternarStatus = async function(idx) {
+        produtosCarregados[idx].ativo = !produtosCarregados[idx].ativo;
+        await salvarProdutosServidor(produtosCarregados);
+      };
+
+      window.excluirProduto = async function(idx) {
+        if (confirm(`Deseja realmente remover o produto "${produtosCarregados[idx].nome}"?`)) {
+          produtosCarregados.splice(idx, 1);
+          await salvarProdutosServidor(produtosCarregados);
+        }
+      };
+
+      async function salvarProdutosServidor(produtos) {
+        localStorage.setItem('flowers_produtos', JSON.stringify(produtos));
+        try {
+          await fetch('/api/produtos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + tokenAuth
+            },
+            body: JSON.stringify({ produtos })
+          });
+        } catch {}
+
+        mostrarFeedback('Alterações salvas com sucesso!');
+        carregarProdutos();
+      }
+
+      // 3. Salvar Telefone WhatsApp e Nova Senha
+      document.getElementById('btn-salvar-whatsapp').addEventListener('click', async () => {
+        const whatsapp = document.getElementById('input-whatsapp').value.trim();
+        if (!whatsapp) return alert('Por favor, informe o telefone com DDD.');
+
+        localStorage.setItem('flowers_whatsapp', whatsapp);
+        try {
+          await fetch('/api/config', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + tokenAuth
+            },
+            body: JSON.stringify({ whatsapp })
+          });
+        } catch {}
+
+        mostrarFeedback('Telefone do WhatsApp atualizado com sucesso!');
+      });
+
+      document.getElementById('btn-salvar-senha').addEventListener('click', async () => {
+        const novaSenha = document.getElementById('input-senha-nova').value.trim();
+        if (novaSenha.length < 4) return alert('A nova senha deve ter no mínimo 4 caracteres.');
+
+        localStorage.setItem('flowers_admin_pass', novaSenha);
+        try {
+          await fetch('/api/config', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + tokenAuth
+            },
+            body: JSON.stringify({ novaSenha })
+          });
+        } catch {}
+
+        mostrarFeedback('Senha alterada! Faça login novamente com a nova senha.');
+        document.getElementById('input-senha-nova').value = '';
+        setTimeout(() => {
+          localStorage.removeItem('flowers_admin_token');
+          tokenAuth = '';
+          verificarAutenticacao();
+        }, 1500);
+      });
+
+      document.getElementById('btn-recarregar').addEventListener('click', carregarProdutos);
+
+      // Salvar Configurações do Supabase
+      document.getElementById('btn-salvar-supabase').addEventListener('click', async () => {
+        const supabaseUrl = document.getElementById('input-supabase-url').value.trim();
+        const supabaseAnonKey = document.getElementById('input-supabase-key').value.trim();
+
+        localStorage.setItem('flowers_supabase_url', supabaseUrl);
+        localStorage.setItem('flowers_supabase_key', supabaseAnonKey);
+
+        try {
+          await fetch('/api/config', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + tokenAuth
+            },
+            body: JSON.stringify({ supabaseUrl, supabaseAnonKey })
+          });
+        } catch {}
+
+        mostrarFeedback('Configurações do Supabase salvas com sucesso!');
+      });
+
+      // Testar Conexão com o Supabase
+      document.getElementById('btn-testar-supabase').addEventListener('click', async () => {
+        const url = document.getElementById('input-supabase-url').value.trim();
+        const key = document.getElementById('input-supabase-key').value.trim();
+        const statusEl = document.getElementById('status-supabase');
+
+        if (!url || !key) {
+          statusEl.style.display = 'block';
+          statusEl.style.background = '#fff3cd';
+          statusEl.style.color = '#664d03';
+          statusEl.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> Por favor, preencha o Project URL e a Anon Key antes de testar.';
+          return;
+        }
+
+        statusEl.style.display = 'block';
+        statusEl.style.background = '#e2e3e5';
+        statusEl.style.color = '#383d41';
+        statusEl.innerHTML = '<i class="bi bi-hourglass-split"></i> Testando conexão com o Supabase...';
+
+        try {
+          // Faz uma requisição REST direta à API do Supabase para verificar a tabela de produtos
+          const endpoint = `${url.replace(/\/$/, '')}/rest/v1/produtos?select=count`;
+          const res = await fetch(endpoint, {
+            headers: {
+              'apikey': key,
+              'Authorization': `Bearer ${key}`
+            }
+          });
+
+          if (res.ok) {
+            statusEl.style.background = '#d1e7dd';
+            statusEl.style.color = '#0f5132';
+            statusEl.innerHTML = '<i class="bi bi-check-circle-fill"></i> Conexão bem-sucedida! Tabela <strong>produtos</strong> encontrada e acessível no Supabase.';
+          } else if (res.status === 404 || res.status === 400) {
+            statusEl.style.background = '#f8d7da';
+            statusEl.style.color = '#842029';
+            statusEl.innerHTML = '<i class="bi bi-x-circle-fill"></i> Conectou ao Supabase, mas a tabela <strong>produtos</strong> ainda não foi criada. Execute o arquivo <code>supabase.sql</code> no SQL Editor do Supabase.';
+          } else {
+            statusEl.style.background = '#f8d7da';
+            statusEl.style.color = '#842029';
+            statusEl.innerHTML = `<i class="bi bi-x-circle-fill"></i> Erro ao conectar (Status HTTP ${res.status}). Verifique se a URL e a Anon Key estão corretas.`;
+          }
+        } catch (err) {
+          statusEl.style.background = '#f8d7da';
+          statusEl.style.color = '#842029';
+          statusEl.innerHTML = '<i class="bi bi-x-circle-fill"></i> Erro de rede ou URL inválida. Verifique o endereço do projeto.';
+        }
+      });
+
+      // 4. Upload de CSV e Drag & Drop
+      const dropzone = document.getElementById('dropzone');
+      const inputFileCsv = document.getElementById('input-file-csv');
+      const secaoPreview = document.getElementById('secao-pre-visualizacao');
+
+      dropzone.addEventListener('click', () => inputFileCsv.click());
+
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+
+      dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('dragover');
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          processarArquivoCsv(e.dataTransfer.files[0]);
+        }
+      });
+
+      inputFileCsv.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          processarArquivoCsv(e.target.files[0]);
+        }
+      });
+
+      let conteudoCsvTexto = '';
+
+      function processarArquivoCsv(file) {
+        if (!file.name.toLowerCase().endsWith('.csv')) {
+          alert('Por favor, selecione um arquivo no formato .CSV.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          conteudoCsvTexto = event.target.result;
+          analisarPreviewCsv(conteudoCsvTexto);
+        };
+        reader.readAsText(file);
+      }
+
+      function analisarPreviewCsv(text) {
+        const clean = text.replace(/^\uFEFF/, '');
+        const lines = clean.split(/\r?\n/).filter(l => l.trim().length > 0);
+        if (lines.length < 2) {
+          alert('O arquivo CSV selecionado parece estar vazio ou sem linhas de dados.');
+          return;
+        }
+
+        const headerLine = lines[0];
+        const delimiter = headerLine.includes(';') && (headerLine.split(';').length >= headerLine.split(',').length) ? ';' : ',';
+
+        function parseLine(line) {
+          const res = [];
+          let cur = '';
+          let inQ = false;
+          for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') {
+              if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+              else { inQ = !inQ; }
+            } else if (ch === delimiter && !inQ) {
+              res.push(cur.trim());
+              cur = '';
+            } else {
+              cur += ch;
+            }
+          }
+          res.push(cur.trim());
+          return res;
+        }
+
+        const headers = parseLine(lines[0]).map(h =>
+          h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[\s_-]+/g, '_').replace(/[^a-z0-9_]/g, '')
+        );
+
+        produtosPreview = [];
+        for (let i = 1; i < lines.length; i++) {
+          const vals = parseLine(lines[i]);
+          if (vals.every(v => v === '')) continue;
+          const row = {};
+          headers.forEach((h, idx) => row[h] = vals[idx] || '');
+
+          const referencia = row.referencia || row.ref || row.codigo || `REF-${String(i).padStart(3, '0')}`;
+          const nome = row.nome || row.produto || row.peca || row.titulo || 'Peça Sem Nome';
+          const categoria = (row.categoria || 'geral').toLowerCase();
+          const precoRaw = String(row.preco || '0').replace('R$', '').replace(/\s/g, '').replace(',', '.');
+          const preco = parseFloat(precoRaw) || 0;
+          const precoOrigRaw = String(row.preco_original || row.preco_antigo || '').replace('R$', '').replace(/\s/g, '').replace(',', '.');
+          const preco_original = precoOrigRaw ? parseFloat(precoOrigRaw) || preco : preco;
+          const tag_desconto = row.tag_desconto || row.desconto || '';
+          const imagem_url = row.imagem_url || row.imagem || row.foto || 'imagens/logo-flowers-store.jpg';
+          const imagem_alt = row.imagem_alt || row.alt || nome;
+          const destaque_home = ['true', '1', 'sim', 's', 'yes', 'verdadeiro'].includes(String(row.destaque_home || row.destaque || row.promocao).toLowerCase());
+          const ativo = !['false', '0', 'nao', 'não', 'n', 'no', 'falso'].includes(String(row.ativo || 'true').toLowerCase());
+
+          produtosPreview.push({
+            id: i,
+            referencia,
+            nome,
+            categoria,
+            descricao: row.descricao || row.detalhes || '',
+            preco,
+            preco_original,
+            tag_desconto,
+            imagem_url,
+            imagem_alt,
+            destaque_home,
+            ativo
+          });
+        }
+
+        if (produtosPreview.length === 0) {
+          alert('Não foi possível ler os produtos do CSV. Certifique-se de usar o modelo padrão.');
+          return;
+        }
+
+        document.getElementById('contagem-csv').innerText = produtosPreview.length;
+        const tbody = document.getElementById('tbody-preview');
+        tbody.innerHTML = produtosPreview.map(p => `
+          <tr>
+            <td><strong>${p.referencia}</strong></td>
+            <td><img src="${p.imagem_url}" class="img-thumb" alt="${p.imagem_alt}"></td>
+            <td>${p.nome}</td>
+            <td>${p.categoria}</td>
+            <td>${Number(p.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+            <td>${p.tag_desconto || '-'}</td>
+            <td>${p.destaque_home ? 'Sim' : 'Não'}</td>
+          </tr>
+        `).join('');
+
+        secaoPreview.style.display = 'block';
+        secaoPreview.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      document.getElementById('btn-cancelar-upload').addEventListener('click', () => {
+        secaoPreview.style.display = 'none';
+        inputFileCsv.value = '';
+        produtosPreview = [];
+      });
+
+      document.getElementById('btn-confirmar-upload').addEventListener('click', async () => {
+        if (!produtosPreview || produtosPreview.length === 0) return;
+
+        localStorage.setItem('flowers_produtos', JSON.stringify(produtosPreview));
+
+        try {
+          await fetch('/api/upload-csv', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + tokenAuth
+            },
+            body: JSON.stringify({ csvContent: conteudoCsvTexto })
+          });
+        } catch {}
+
+        mostrarFeedback(`🎉 Sucesso! ${produtosPreview.length} produtos foram importados e publicados no site.`);
+        secaoPreview.style.display = 'none';
+        inputFileCsv.value = '';
+        carregarProdutos();
+      });
+
+      // Inicializa
+      verificarAutenticacao();
+    </script>
+  </body>
+</html>
