@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Promoções da semana Flower's Uberaba">
+    <link rel="shortcut icon" href="imagens/Icons/logo-flowers-store.jpg" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@600&display=swap"
+      rel="stylesheet"/>
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+    <link rel="shortcut icon" href="imagens/Icons/logo-flowers-store.jpg" type="image/jpg">
+    <link rel="stylesheet" href="css/global.css"/>
+    <link rel="stylesheet" href="css/promocao.css"/>
+    <title>Flower's Store - Promoções</title>
+  </head>
+
+  <body>
+    <!-- CABEÇALHO -->
+    <div class="top-announcement-bar">
+      <p>
+        🌸 Frete Grátis para Uberaba em compras acima de R$ 150 · Parcele em até 3x sem juros 
+        <a href="index.html" class="splash-link">✨ Ver Splash de Entrada</a>
+      </p>
+    </div>
+    
+    <header>
+      <div class="logo-container">
+        <img
+          class="logo logo-circular"
+          src="imagens/Icons/logo-flowers-store.jpg"
+          alt="Logo Flower's Store Esquerda"
+        />
+        <h1 class="titulo-loja">Flower's Store</h1>
+        <img
+          class="logo logo-circular"
+          src="imagens/Icons/logo-flowers-store.jpg"
+          alt="Logo Flower's Store Direita"
+        />
+      </div>
+    </header>
+
+    <!-- NAVEGAÇÃO GLOBAL -->
+    <nav class="navegacao-principal">
+        <a href="promocao.html" class="active">Promoções da Semana</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html">Contato</a>
+    </nav>
+
+    <!-- CONTEÚDO DINÂMICO DE PROMOÇÕES -->
+    <main class="pagina-home">
+        <h2>Promoções da Semana</h2>
+        
+        <section class="grade-produtos-geral" id="container-grade-promocoes">
+            <p style="text-align:center; padding: 40px; color: #555; grid-column: 1 / -1;">Carregando promoções...</p>
+        </section>
+    </main>
+
+    <!-- RODAPÉ GLOBAL -->
+    <footer class="rodape">
+      <img class="logo-circular" src="imagens/Icons/logo-flowers-store.jpg" alt="Logo Flower's Store"/>
+      <h1 class="titulo-loja-baixo">Flower's Store</h1>
+      <br>
+      <p>Elegância, bom gosto e peças exclusivas feitas para realçar a<br>beleza e a autoestima feminina.</p>
+      <br>
+      <p>&copy;2026 Flower's Store. Todos os direitos reservados. · Rua Getúlio Guarita, 543 - Abadia, Uberaba - MG</p>
+    </footer>
+
+    <!-- Supabase e Script de Renderização Dinâmica -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script>
+      async function carregarProdutosPromocao() {
+        const container = document.getElementById('container-grade-promocoes');
+
+        if (!window.supabase) {
+          container.innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar banco de dados.</p>';
+          return;
+        }
+
+        try {
+          // Busca apenas os produtos da categoria promoção
+          const { data, error } = await window.supabase
+            .from('produtos')
+            .select('*')
+            .eq('categoria', 'promocao');
+
+          if (error) {
+            console.error('Erro ao buscar promoções:', error);
+            container.innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar promoções.</p>';
+            return;
+          }
+
+          const promocoesAtivas = data.filter(p => p.ativo !== false);
+
+          if (promocoesAtivas.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:30px; grid-column: 1 / -1;">Nenhuma promoção ativa no momento.</p>';
+            return;
+          }
+
+          container.innerHTML = promocoesAtivas.map(p => {
+            const precoFmt = Number(p.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const imagemSrc = p.imagem_url || 'imagens/logo-flowers-store.jpg';
+            const msgWhats = encodeURIComponent(`Olá! Tenho interesse na promoção ${p.nome} de ${precoFmt}.`);
+            const tagDesc = p.tag_desconto ? `<span class="tag-desconto">${p.tag_desconto}</span>` : '<span class="tag-desconto">Promo</span>';
+
+            return `
+              <article class="produto produto-promocao">
+                  ${tagDesc}
+                  <img src="${imagemSrc}" alt="${p.nome}" class="fotos">
+                  <h3>${p.nome}</h3>
+                  <p class="preco">${precoFmt}</p>
+                  <button type="button" onclick="window.open('https://wa.me/5534996682810?text=${msgWhats}', '_blank')">Comprar Agora</button>
+              </article>
+            `;
+          }).join('');
+
+        } catch (err) {
+          console.error('Erro de conexão:', err);
+          container.innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar promoções.</p>';
+        }
+      }
+
+      carregarProdutosPromocao();
+    </script>
+  </body>
+</html>
