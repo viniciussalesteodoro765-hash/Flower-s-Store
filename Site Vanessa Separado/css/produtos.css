@@ -1,0 +1,456 @@
+/* ========================================
+   BARRA DE ANÚNCIO
+======================================== */
+
+.top-announcement-bar {
+  background-color: var(--primary-color);
+  color: #f7f3f0;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-family: sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.top-announcement-bar p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+}
+
+.top-announcement-bar .splash-link {
+  color: #e6c56b;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.top-announcement-bar .splash-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+
+/* ========================================
+   TÍTULO DO CATÁLOGO
+======================================== */
+
+.vinicius-titulo-catalogo {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  margin-top: 20px;
+  margin-left: 70px;
+}
+
+
+/* ========================================
+   SUBTÍTULO
+======================================== */
+
+.vinicius-subtitulo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #5c5260;
+  margin-left: 140px;
+}
+
+
+/* ========================================
+   ÁREA PRINCIPAL DO CATÁLOGO
+======================================== */
+
+#vinicius-produtos {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 30px;
+  box-sizing: border-box;
+}
+
+
+/* ========================================
+   FILTROS DAS CATEGORIAS
+======================================== */
+
+#vinicius-produtos .vinicius-filtros {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 12px 0 25px;
+}
+
+#vinicius-produtos .vinicius-filtro-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  padding: 12px 24px;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 4px;
+  border-bottom: 6px solid var(--third-color);
+  font-family: var(--font-body);
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+#vinicius-produtos .vinicius-filtro-btn:hover,
+#vinicius-produtos .vinicius-filtro-btn:focus-visible {
+  background-color: var(--secondary-color);
+  outline: 2px solid var(--third-color);
+}
+
+
+/* ========================================
+   TÍTULOS DAS CATEGORIAS
+======================================== */
+
+#vinicius-produtos .vinicius-titulo-categoria {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  margin: 25px 0 10px;
+  padding-bottom: 5px;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--fourth-color);
+  scroll-margin-top: 100px;
+}
+
+
+/* ========================================
+   GRADE DE PRODUTOS
+======================================== */
+
+#vinicius-produtos .grade-produtos-geral {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+
+/* ========================================
+   IMAGENS DOS PRODUTOS
+======================================== */
+
+#vinicius-produtos .produto .fotos {
+  width: 100%;
+  height: 280px;
+  border-radius: 4px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+#vinicius-produtos .produto:hover .fotos {
+  transform: scale(1.03);
+}
+
+
+/* ========================================
+   EFEITO NOS CARTÕES
+======================================== */
+
+#vinicius-produtos .produto {
+  transition: transform 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+#vinicius-produtos .produto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.398);
+}
+
+
+/* ========================================
+   MENU DE ÍCONES HORIZONTAL
+   FIXO NA PARTE INFERIOR
+======================================== */
+
+.navegacao-secundaria {
+  display: none;
+  position: fixed;
+
+  bottom: 20px;
+  left: 50%;
+  top: auto;
+  transform: translateX(-50%);
+
+  z-index: 9999;
+
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 12px;
+
+  background-color: var(--sixth-color);
+  border: 2px solid var(--fifth-color);
+  border-radius: 35px;
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-sizing: border-box;
+}
+
+
+/* Links dos ícones */
+
+.menu-link-navegacao-secundaria {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  color: var(--primary-color);
+  font-size: 22px;
+
+  border-radius: 50%;
+  text-decoration: none;
+
+  transition: color 0.3s ease,
+              background-color 0.3s ease,
+              transform 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+
+/* Ícones Ionicons */
+
+.menu-link-navegacao-secundaria ion-icon {
+  font-size: 22px;
+}
+
+
+/* Efeito ao passar o mouse */
+
+.menu-link-navegacao-secundaria:hover {
+  color: white;
+  background-color: var(--third-color);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 0 12px rgba(177, 29, 16, 0.25);
+}
+
+
+/* Acessibilidade por teclado */
+
+.menu-link-navegacao-secundaria:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+
+/* ========================================
+   BOTÃO VOLTAR AO TOPO
+======================================== */
+
+.vinicius-voltar-topo {
+  position: fixed;
+
+  bottom: 20px;
+  right: 20px;
+
+  background-color: var(--primary-color);
+  color: var(--fifth-color);
+
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  font-size: 1.4rem;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+  z-index: 9999;
+
+  transition: transform 0.2s ease,
+              background-color 0.2s ease;
+}
+
+.vinicius-voltar-topo:hover {
+  transform: translateY(-3px);
+  background-color: var(--third-color);
+  color: #ffffff;
+}
+
+
+/* ========================================
+   BOTÃO FLUTUANTE DO WHATSAPP
+======================================== */
+
+.whatsapp-flutuante {
+  position: fixed;
+
+  bottom: 20px;
+  right: 75px;
+
+  background-color: #25d366;
+  color: #ffffff;
+
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  font-size: 1.4rem;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+  z-index: 9999;
+
+  transition: transform 0.2s ease,
+              background-color 0.2s ease;
+}
+
+.whatsapp-flutuante:hover {
+  transform: translateY(-3px);
+  background-color: #20ba5a;
+  color: #ffffff;
+}
+
+
+/* ========================================
+   RESPONSIVIDADE PARA TABLETS
+======================================== */
+
+@media (max-width: 992px) {
+
+  #vinicius-produtos .grade-produtos-geral {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #vinicius-produtos {
+    padding: 20px;
+  }
+
+}
+
+
+/* ========================================
+   RESPONSIVIDADE PARA CELULARES
+======================================== */
+
+@media (max-width: 600px) {
+
+  /* Título */
+
+  .vinicius-titulo-catalogo {
+    margin-left: 20px;
+  }
+
+  /* Subtítulo */
+
+  .vinicius-subtitulo {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  /* Catálogo */
+
+  #vinicius-produtos {
+    padding: 15px;
+  }
+
+  /* Filtros */
+
+  #vinicius-produtos .vinicius-filtros {
+    gap: 10px;
+  }
+
+  #vinicius-produtos .vinicius-filtro-btn {
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+
+  /* Produtos */
+
+  #vinicius-produtos .grade-produtos-geral {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #vinicius-produtos .produto .fotos {
+    height: 200px;
+  }
+
+  /* Títulos das categorias */
+
+  #vinicius-produtos .vinicius-titulo-categoria {
+    font-size: 1.4rem;
+    scroll-margin-top: 80px;
+  }
+
+  /* Menu de ícones horizontal */
+
+  .navegacao-secundaria {
+    bottom: 15px;
+    left: 50%;
+    top: auto;
+    transform: translateX(-50%);
+
+    flex-direction: row;
+    gap: 5px;
+
+    padding: 6px 9px;
+
+    max-width: calc(100vw - 24px);
+  }
+
+  .menu-link-navegacao-secundaria {
+    width: 40px;
+    height: 40px;
+  }
+
+  .menu-link-navegacao-secundaria ion-icon {
+    font-size: 20px;
+  }
+
+  /* Botões flutuantes */
+
+  .vinicius-voltar-topo,
+  .whatsapp-flutuante {
+    width: 40px;
+    height: 40px;
+    bottom: 15px;
+    font-size: 1.2rem;
+  }
+
+  .vinicius-voltar-topo {
+    right: 12px;
+  }
+
+  .whatsapp-flutuante {
+    right: 60px;
+  }
+
+}

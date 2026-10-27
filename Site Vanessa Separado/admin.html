@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="imagens/Icons/logo-flowers-store.jpg" type="image/png">
+    <title>Painel Administrativo - Flower's Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+
+    <!-- CDN e Cliente do Supabase carregados no cabeçalho -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+  </head>
+
+  <body class="admin-body">
+    <!-- TELA DE LOGIN (QUANDO NÃO AUTENTICADO) -->
+    <div id="secao-login" class="login-box">
+      <img
+        class="logo-circular"
+        src="imagens/Icons/logo-flowers-store.jpg"
+        alt="Logo Flower's Store"
+      />
+      <h2>Acesso Administrativo</h2>
+      <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">
+        Gerenciamento de Produtos e WhatsApp da Flower's Store
+      </p>
+
+      <div id="login-erro" style="display:none; background:#f8d7da; color:#842029; padding:10px; border-radius:6px; margin-bottom:15px; font-size:0.85rem;"></div>
+
+      <form id="form-login">
+        <div class="form-group">
+          <label for="usuario">Usuário</label>
+          <input type="text" id="usuario" class="form-control" required value="admin" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" class="form-control" required placeholder="Digite sua senha" autocomplete="current-password" />
+        </div>
+        <button type="submit" style="margin-top: 10px; cursor: pointer;">
+          <i class="bi bi-box-arrow-in-right"></i> Entrar no Painel
+        </button>
+      </form>
+    </div>
+
+    <!-- PAINEL PRINCIPAL (QUANDO AUTENTICADO) -->
+    <div id="secao-painel" style="display: none; flex-direction: column; min-height: 100vh;">
+      <header class="admin-header">
+        <div class="admin-header-title">
+          <img
+            class="logo-circular"
+            src="imagens/Icons/logo-flowers-store.jpg"
+            alt="Logo Flower's Store"
+            style="width: 50px; height: 50px;"
+          />
+          <div>
+            <h1>Flower's Store - Painel do Lojista</h1>
+            <p style="font-size: 0.8rem; color: #f5ebe6; margin: 0;">Atualização de Catálogo e Vendas WhatsApp</p>
+          </div>
+        </div>
+        <div class="admin-header-actions">
+          <a href="index.html" target="_blank" class="btn-secondary">
+            <i class="bi bi-shop"></i> Ver Loja Online
+          </a>
+          <button id="btn-logout" type="button" class="btn-danger" style="cursor: pointer;">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </button>
+        </div>
+      </header>
+
+      <main class="admin-container">
+        <!-- ALERTAS DE SUCESSO OU ERRO -->
+        <div id="alerta-feedback" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: 600;"></div>
+
+        <!-- FORMULÁRIO PARA ADICIONAR NOVO PRODUTO -->
+        <div class="admin-card" style="margin-bottom: 25px;">
+          <h2 style="margin-bottom: 15px; border: none; padding: 0;">
+            <i class="bi bi-plus-circle-fill" style="color: #198754;"></i> Adicionar Novo Produto ao Catálogo
+          </h2>
+          <form id="form-novo-produto" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: flex-end;">
+            <div class="form-group" style="margin: 0;">
+              <label for="novo-nome">Nome do Produto</label>
+              <input type="text" id="novo-nome" class="form-control" required placeholder="Ex: Vestido Midi de Linho" />
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="novo-preco">Preço (R$)</label>
+              <input type="text" id="novo-preco" class="form-control" required placeholder="Ex: 159.90" />
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="novo-categoria">Categoria</label>
+              <select id="novo-categoria" class="form-control">
+                <option value="vestidos">Vestidos</option>
+                <option value="bermudas">Bermudas</option>
+                <option value="camisetas_e_blusas">Camisetas e Blusas</option>
+                <option value="macacoes">Macacões</option>
+                <option value="promocao">Promoção</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="novo-arquivo-imagem">Foto do Produto</label>
+              <input type="file" id="novo-arquivo-imagem" class="form-control" accept="image/*" required style="padding: 6px;" />
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="novo-desconto">Desconto (Ex: -20%)</label>
+              <input type="text" id="novo-desconto" class="form-control" placeholder="Opcional" />
+            </div>
+            <div>
+              <button type="submit" class="btn-success" style="width: 100%; padding: 10px; background-color: #198754; border: none; color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                <i class="bi bi-plus-lg"></i> Cadastrar Peça
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- CONFIGURAÇÃO DE SENHA -->
+        <div class="admin-card" style="margin-bottom: 25px;">
+          <div class="form-group" style="margin: 0;">
+            <label for="input-senha-nova">Alterar Senha do Admin</label>
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+              <input type="password" id="input-senha-nova" class="form-control" placeholder="Nova senha (mínimo 4 dígitos)" />
+              <button type="button" id="btn-salvar-senha" class="btn-secondary" style="width: auto; white-space: nowrap; cursor: pointer;">Atualizar Senha</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LISTA DE PRODUTOS ATIVOS NO SITE -->
+        <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+            <h2 style="margin: 0; border: none; padding: 0;">
+              <i class="bi bi-tags"></i> Produtos Atuais no Catálogo (<span id="total-produtos">0</span>)
+            </h2>
+            <button type="button" id="btn-recarregar" class="btn-secondary" style="width: auto; font-size: 0.85rem; padding: 6px 14px; cursor: pointer;">
+              <i class="bi bi-arrow-clockwise"></i> Atualizar Lista
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Imagem</th>
+                  <th>URL da Imagem</th>
+                  <th>Nome do Produto</th>
+                  <th>Categoria</th>
+                  <th>Preço</th>
+                  <th>Desconto</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-produtos-atuais">
+                <tr>
+                  <td colspan="7" style="text-align: center; color: #888;">Carregando produtos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <footer class="rodape" style="margin-top: auto; padding: 15px 0; font-size: 0.85rem; text-align: center;">
+        <p>&copy; 2026 Flower's Store - Painel Administrativo</p>
+      </footer>
+    </div>
+
+    <!-- SCRIPT DE FUNCIONAMENTO DO ADMIN -->
+    <script>
+      let produtosCarregados = [];
+      let tokenAuth = localStorage.getItem('flowers_admin_token') || '';
+
+      const secaoLogin = document.getElementById('secao-login');
+      const secaoPainel = document.getElementById('secao-painel');
+      const formLogin = document.getElementById('form-login');
+      const loginErro = document.getElementById('login-erro');
+      const alertaFeedback = document.getElementById('alerta-feedback');
+
+      function verificarAutenticacao() {
+        if (tokenAuth) {
+          secaoLogin.style.display = 'none';
+          secaoPainel.style.display = 'flex';
+          carregarDadosIniciais();
+        } else {
+          secaoLogin.style.display = 'block';
+          secaoPainel.style.display = 'none';
+        }
+      }
+
+      formLogin.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const usuario = document.getElementById('usuario').value.trim();
+        const senha = document.getElementById('senha').value.trim();
+        loginErro.style.display = 'none';
+
+        const usuarioEsperado = localStorage.getItem('flowers_admin_user') || 'admin';
+        const senhaEsperada = localStorage.getItem('flowers_admin_pass') || 'vanessa123';
+
+        if (usuario === usuarioEsperado && senha === senhaEsperada) {
+          tokenAuth = 'client_token_' + Date.now();
+          localStorage.setItem('flowers_admin_token', tokenAuth);
+          verificarAutenticacao();
+          return;
+        }
+
+        loginErro.innerText = 'Usuário ou senha incorretos.';
+        loginErro.style.display = 'block';
+      });
+
+      document.getElementById('btn-logout').addEventListener('click', () => {
+        localStorage.removeItem('flowers_admin_token');
+        tokenAuth = '';
+        verificarAutenticacao();
+      });
+
+      function mostrarFeedback(msg, tipo = 'success') {
+        alertaFeedback.innerText = msg;
+        alertaFeedback.style.display = 'block';
+        if (tipo === 'success') {
+          alertaFeedback.style.background = '#d1e7dd';
+          alertaFeedback.style.color = '#0f5132';
+        } else {
+          alertaFeedback.style.background = '#f8d7da';
+          alertaFeedback.style.color = '#842029';
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+          alertaFeedback.style.display = 'none';
+        }, 5000);
+      }
+
+      async function carregarDadosIniciais() {
+        carregarProdutos();
+      }
+
+      async function carregarProdutos() {
+        const tbody = document.getElementById('tbody-produtos-atuais');
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Carregando produtos...</td></tr>';
+
+        if (window.supabase) {
+          try {
+            const { data, error } = await window.supabase.from('produtos').select('*').order('id', { ascending: true });
+            if (!error && data) {
+              produtosCarregados = data;
+              renderizarTabelaProdutos(produtosCarregados);
+              return;
+            }
+          } catch (err) {
+            console.warn('Erro ao carregar do Supabase:', err);
+          }
+        }
+
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Erro ao carregar produtos.</td></tr>';
+      }
+
+      function renderizarTabelaProdutos(produtos) {
+        const tbody = document.getElementById('tbody-produtos-atuais');
+        document.getElementById('total-produtos').innerText = produtos.length;
+
+        if (!produtos || produtos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px;">Nenhum produto cadastrado no momento.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = produtos.map((p, idx) => {
+          const imagemSrc = p.imagem_url || 'imagens/logo-flowers-store.jpg';
+
+          return `
+            <tr>
+              <td><img src="${imagemSrc}" class="img-thumb" alt="${p.nome}" width="40" height="40" style="object-fit:cover; border-radius:4px;"></td>
+              <td><input type="text" id="url-${idx}" value="${p.imagem_url || ''}" class="form-control" style="font-size:0.8rem; padding:4px;" placeholder="URL da imagem"></td>
+              <td><input type="text" id="nome-${idx}" value="${p.nome || ''}" class="form-control" style="font-size:0.8rem; padding:4px;"></td>
+              <td>
+                <select id="cat-${idx}" class="form-control" style="font-size:0.8rem; padding:4px;">
+                  <option value="vestidos" ${p.categoria === 'vestidos' ? 'selected' : ''}>Vestidos</option>
+                  <option value="bermudas" ${p.categoria === 'bermudas' ? 'selected' : ''}>Bermudas</option>
+                  <option value="camisetas_e_blusas" ${p.categoria === 'camisetas_e_blusas' ? 'selected' : ''}>Camisetas e Blusas</option>
+                  <option value="macacoes" ${p.categoria === 'macacoes' ? 'selected' : ''}>Macacões</option>
+                  <option value="promocao" ${p.categoria === 'promocao' ? 'selected' : ''}>Promoção</option>
+                </select>
+              </td>
+              <td><input type="text" id="preco-${idx}" value="${p.preco || 0}" class="form-control" style="font-size:0.8rem; padding:4px; width:80px;"></td>
+              <td><input type="text" id="desconto-${idx}" value="${p.tag_desconto || ''}" class="form-control" style="font-size:0.8rem; padding:4px; width:70px;" placeholder="-20%"></td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <button type="button" class="btn-success" onclick="salvarProdutoUnico(${idx})" title="Salvar Alterações" style="padding: 4px 10px; font-size: 0.8rem; background-color: #198754; border:none; color: #fff; border-radius:4px; cursor:pointer;">
+                    <i class="bi bi-check-lg"></i> Salvar
+                  </button>
+                  <button type="button" class="action-btn btn-secondary" onclick="alternarStatus(${idx})" title="Ativar/Desativar" style="padding: 4px 8px; cursor:pointer;">
+                    <i class="bi bi-power"></i>
+                  </button>
+                  <button type="button" class="action-btn btn-danger" onclick="excluirProduto(${idx})" title="Excluir" style="padding: 4px 8px; cursor:pointer;">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('form-novo-produto').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const nome = document.getElementById('novo-nome').value.trim();
+        const precoStr = document.getElementById('novo-preco').value.replace(',', '.');
+        const preco = parseFloat(precoStr) || 0;
+        const categoria = document.getElementById('novo-categoria').value;
+        const tag_desconto = document.getElementById('novo-desconto').value.trim();
+        const inputFile = document.getElementById('novo-arquivo-imagem');
+
+        let imagem_url = 'imagens/logo-flowers-store.jpg';
+
+        if (inputFile.files && inputFile.files[0]) {
+          const arquivo = inputFile.files[0];
+          const nomeArquivoLimpo = Date.now() + '-' + arquivo.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+
+          if (window.supabase) {
+            try {
+              const { error: uploadError } = await window.supabase.storage
+                .from('produtos')
+                .upload(nomeArquivoLimpo, arquivo);
+
+              if (uploadError) {
+                console.error('Erro no upload:', uploadError);
+                alert('Erro ao carregar a imagem para o armazenamento.');
+                return;
+              }
+
+              const { data: publicUrlData } = window.supabase.storage
+                .from('produtos')
+                .getPublicUrl(nomeArquivoLimpo);
+
+              if (publicUrlData) {
+                imagem_url = publicUrlData.publicUrl;
+              }
+            } catch (err) {
+              console.error('Erro de conexão no upload:', err);
+            }
+          }
+        }
+
+        const novoProduto = {
+          nome,
+          preco,
+          categoria,
+          imagem_url,
+          tag_desconto,
+          ativo: true
+        };
+
+        if (window.supabase) {
+          try {
+            const { error } = await window.supabase.from('produtos').insert([novoProduto]);
+            if (error) {
+              console.error('Erro ao inserir no Supabase:', error);
+              alert('Erro ao cadastrar o produto no banco de dados.');
+              return;
+            }
+          } catch (err) {
+            console.error('Erro de conexão:', err);
+          }
+        }
+
+        document.getElementById('form-novo-produto').reset();
+        mostrarFeedback(`🎉 Sucesso! Produto "${nome}" adicionado com foto ao catálogo.`);
+        carregarProdutos();
+      });
+
+      window.salvarProdutoUnico = async function(idx) {
+        const produto = produtosCarregados[idx];
+
+        produto.nome = document.getElementById(`nome-${idx}`).value.trim();
+        produto.imagem_url = document.getElementById(`url-${idx}`).value.trim();
+        produto.categoria = document.getElementById(`cat-${idx}`).value.trim();
+        produto.tag_desconto = document.getElementById(`desconto-${idx}`).value.trim();
+        
+        const precoStr = document.getElementById(`preco-${idx}`).value.replace(',', '.');
+        produto.preco = parseFloat(precoStr) || 0;
+
+        if (window.supabase && produto.id) {
+          try {
+            const { error } = await window.supabase
+              .from('produtos')
+              .update({
+                nome: produto.nome,
+                imagem_url: produto.imagem_url,
+                categoria: produto.categoria,
+                preco: produto.preco,
+                tag_desconto: produto.tag_desconto
+              })
+              .eq('id', produto.id);
+
+            if (error) {
+              console.error('Erro ao atualizar no Supabase:', error);
+              alert('Erro ao salvar no Supabase.');
+              return;
+            }
+          } catch (err) {
+            console.error('Erro de conexão:', err);
+          }
+        }
+
+        mostrarFeedback(`🎉 Sucesso! Produto "${produto.nome}" atualizado.`);
+        carregarProdutos();
+      };
+
+      window.alternarStatus = async function(idx) {
+        produtosCarregados[idx].ativo = !produtosCarregados[idx].ativo;
+        if (window.supabase && produtosCarregados[idx].id) {
+          await window.supabase.from('produtos').update({ ativo: produtosCarregados[idx].ativo }).eq('id', produtosCarregados[idx].id);
+        }
+        mostrarFeedback('Status alterado com sucesso!');
+        carregarProdutos();
+      };
+
+      window.excluirProduto = async function(idx) {
+        if (confirm(`Deseja realmente remover o produto "${produtosCarregados[idx].nome}"?`)) {
+          const prodId = produtosCarregados[idx].id;
+          produtosCarregados.splice(idx, 1);
+          if (window.supabase && prodId) {
+            await window.supabase.from('produtos').delete().eq('id', prodId);
+          }
+          mostrarFeedback('Produto removido com sucesso!');
+          carregarProdutos();
+        }
+      };
+
+      document.getElementById('btn-salvar-senha').addEventListener('click', async () => {
+        const novaSenha = document.getElementById('input-senha-nova').value.trim();
+        if (novaSenha.length < 4) return alert('A nova senha deve ter no mínimo 4 caracteres.');
+        localStorage.setItem('flowers_admin_pass', novaSenha);
+        mostrarFeedback('Senha alterada com sucesso! Faça login novamente com a nova senha.');
+        document.getElementById('input-senha-nova').value = '';
+        setTimeout(() => {
+          localStorage.removeItem('flowers_admin_token');
+          tokenAuth = '';
+          verificarAutenticacao();
+        }, 1500);
+      });
+
+      document.getElementById('btn-recarregar').addEventListener('click', carregarProdutos);
+
+      verificarAutenticacao();
+    </script>
+  </body>
+</html>
